@@ -36,3 +36,17 @@ frontend:
 
 postgres:
 	docker compose exec postgres psql -U crypto -d idle
+
+
+####################################
+# NestJS
+####################################
+
+g-module:
+	docker compose exec backend npx nest g module $(name)
+
+g-service:
+	docker compose exec backend npx nest g service $(name)
+
+g-controller:
+	docker compose exec backend npx nest g controller $(name)
