@@ -1,0 +1,40 @@
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: idle_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: idle
+      POSTGRES_PASSWORD: idle
+      POSTGRES_DB: idle
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: idle_backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    env_file:
+      - ./backend/.env
+
+  frontend:
+    build: ./frontend
+    container_name: idle_frontend
+    volumes:
+      - ./frontend:/app
+      # - /app/node_modules 
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
